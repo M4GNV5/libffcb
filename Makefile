@@ -1,5 +1,5 @@
 CC = gcc
-TARGET = x86
+TARGET = ia64
 CFLAGS = -Wall -g -fPIC
 ASFLAGS = --64
 
