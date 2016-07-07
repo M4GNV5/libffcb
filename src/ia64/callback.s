@@ -1,7 +1,9 @@
 .global ffcb_call
 ffcb_call:
-	/*176 register buffer + 24 va_list + 8 stack alignment*/
-	subq $208, %rsp
+	pushq   %rbp
+	movq    %rsp, %rbp		/*allow backtracing*/
+	/*176 register buffer + 24 va_list*/
+	subq $200, %rsp
 
 	movq %rdi, (%rsp)
 	movq %rsi, 8(%rsp)
@@ -35,5 +37,5 @@ ffcb_call:
 	leaq 176(%rsp), %rsi
 	call *(%rax)
 
-	addq $208, %rsp
+	leave
 	ret
