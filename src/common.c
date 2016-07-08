@@ -22,7 +22,7 @@ bool ffcb_init()
 	unlink (tmpfname);
 	ftruncate (fd, pageSize);
 
-	ffcb_mem = mmap(NULL, pageSize, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_SHARED, fd, 0);
+	ffcb_mem = mmap(NULL, pageSize, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE, fd, 0);
 	ffcb_unusedIndex = 0;
 
 	if(ffcb_mem == NULL)
