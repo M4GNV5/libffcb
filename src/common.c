@@ -13,16 +13,7 @@ size_t ffcb_unusedIndex;
 
 bool ffcb_init()
 {
-	size_t pageSize = getpagesize();
-	char tmpfname[] = "/tmp/ffcbXXXXXX";
-	int fd = mkstemp (tmpfname);
-	if(!fd)
-		return false;
-
-	unlink (tmpfname);
-	ftruncate (fd, pageSize);
-
-	ffcb_mem = mmap(NULL, pageSize, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE, fd, 0);
+	ffcb_mem = mmap(NULL, getpagesize(), PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	ffcb_unusedIndex = 0;
 
 	if(ffcb_mem == NULL)
