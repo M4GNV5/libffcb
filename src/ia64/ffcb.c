@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <sys/mman.h>
-#include "../common.h"
 
 typedef struct ffcb
 {
