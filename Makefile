@@ -7,7 +7,6 @@ BIN = bin
 
 OBJECTS += bin/callback.o
 OBJECTS += bin/ffcb.o
-OBJECTS += bin/common.o
 
 all: $(BIN) $(OBJECTS)
 	$(CC) $(OBJECTS) -shared -o $(BIN)/libffcb.so
