@@ -24,9 +24,9 @@ ffcb_call:
 	/* Create va_arg struct (see http://www.x86-64.org/documentation/abi.pdf) */
 	movl $0, 176(%rsp)		/*unsigned int gp_offset;*/
 	movl $48, 180(%rsp)		/*unsigned int fp_offset;*/
-	movq %rsp, 184(%rsp)	/*void *overflow_area;*/
 	leaq 224(%rsp), %rax
-	movq %rax, 192(%rsp)	/*void *reg_area;*/
+	movq %rax, 184(%rsp)	/*void *overflow_area;*/
+	movq %rsp, 192(%rsp)	/*void *reg_area;*/
 
 	/*retrieve ffcb_t pointer*/
 	movq 208(%rsp), %rax
