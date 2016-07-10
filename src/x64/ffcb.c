@@ -11,6 +11,7 @@ typedef struct ffcb
 } ffcb_t;
 
 ffcb_t *ffcb_mem = NULL;
+ffcb_t *ffcb_unused = NULL;
 size_t ffcb_unusedIndex;
 
 extern void ffcb_call();
@@ -26,7 +27,16 @@ void *ffcb_create(void *func, void *arg)
 		ffcb_unusedIndex = 0;
 	}
 
-	ffcb_t *cb = &ffcb_mem[ffcb_unusedIndex++];
+	ffcb_t *cb;
+	if(ffcb_unused == NULL)
+	{
+		cb = &ffcb_mem[ffcb_unusedIndex++];
+	}
+	else
+	{
+		cb = ffcb_unused;
+		ffcb_unused = ffcb_unused->data;
+	}
 
 	cb->code[0] = 0xe8; //call
 	*(int32_t *)(cb->code + 1) = (uint8_t *)&ffcb_call - cb->code - 5;
@@ -35,4 +45,10 @@ void *ffcb_create(void *func, void *arg)
 	cb->data = arg;
 
 	return cb;
+}
+
+void ffcb_delete(ffcb_t *func)
+{
+	func->data = ffcb_unused;
+	ffcb_unused = func;
 }
