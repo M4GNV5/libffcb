@@ -11,3 +11,5 @@ ffcb_call:
 
 	pushl 4(%eax)
 	call *(%eax)
+	addl $8, %esp
+	ret
