@@ -7,7 +7,7 @@ ffcb_call:
 	/*retrieve ffcb_t pointer*/
 	movl 4(%esp), %eax
 	andb $0xE0, %al
-	addl $16, %eax
+	addl $24, %eax
 
 	pushl 4(%eax)
 	call *(%eax)

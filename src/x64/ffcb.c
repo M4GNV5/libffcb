@@ -5,7 +5,7 @@
 
 typedef struct ffcb
 {
-	uint8_t code[16];
+	uint8_t code[32 - 2 * sizeof(void *)];
 	void *func;
 	void *data;
 } ffcb_t;
