@@ -5,7 +5,9 @@
 
 typedef struct ffcb
 {
-	uint8_t code[32 - 2 * sizeof(void *)];
+	uint8_t code[23 - 2 * sizeof(void *)];
+	char retType; //0 = void/keep, 1 = int/pointer, 2 = float
+	int64_t retValue;
 	void *func;
 	void *data;
 } ffcb_t;
@@ -41,6 +43,8 @@ void *ffcb_create(void *func, void *arg)
 	cb->code[0] = 0xe8; //call
 	*(int32_t *)(cb->code + 1) = (uint8_t *)&ffcb_call - cb->code - 5;
 	cb->code[5] = 0xc3; //ret
+
+	cb->retType = 0;
 	cb->func = func;
 	cb->data = arg;
 
