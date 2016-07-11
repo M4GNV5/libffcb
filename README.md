@@ -40,8 +40,10 @@ Planned:
 #include <stdarg.h>
 #include "src/ffcb.h"
 
+//function pointer type
 typedef double (*callback_t)(int argc, ...);
 
+//the function we will combine with a data pointer
 void myFunc(ffcb_return_t *ret, int *data, va_list ap)
 {
 	//print data
@@ -49,31 +51,42 @@ void myFunc(ffcb_return_t *ret, int *data, va_list ap)
 
 	if(*data < 0) //called from atexit => no arguments
 	{
+		//free the malloc'ed memory
 		free(data);
 		return;
 	}
 
-	//print arguments
+	//print arguments first argument is argc, all following are of type int
 	int argc = va_arg(ap, int);
 	for(int i = 0; i < argc; i++)
 	{
 		printf("args[%d] = %d\n", i, va_arg(ap, int));
 	}
 
+	//return the value 3.1415
 	ffcb_return_float(ret, 3.1415);
 }
 
 int main()
 {
+	//data for the two callbacks
 	int a = 42;
 	int *b = malloc(sizeof(int));
 	*b = -666;
 
+	//combine myFunc with &a into local variable 'func'
 	callback_t func = ffcb_create(myFunc, &a);
-	printf("func returned %f\n", func(4, 31, 12, 13, 17));
+
+	//print the return value of calling func
+	printf("func returned %g\n", func(4, 31, 12, 13, 17));
+
+	//invalidate the func pointer (similar to free'ing memory)
 	ffcb_delete(func);
 
+	//allocate a new callback that we pass to atexit
 	void *func2 = ffcb_create(myFunc, b);
 	atexit(func2);
+
+	return 0;
 }
 ```
