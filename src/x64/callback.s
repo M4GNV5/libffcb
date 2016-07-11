@@ -3,8 +3,8 @@
 ffcb_call:
 	pushq   %rbp
 	movq    %rsp, %rbp		/*allow backtracing*/
-	/*176 register buffer + 24 va_list*/
-	subq $200, %rsp
+	/*176 register buffer + 24 va_list + 16 return struct */
+	subq $216, %rsp
 
 	movq %rdi, (%rsp)
 	movq %rsi, 8(%rsp)
@@ -30,28 +30,26 @@ ffcb_call:
 	movq %rsp, 192(%rsp)	/*void *reg_area;*/
 
 	/*retrieve ffcb_t pointer*/
-	movq 208(%rsp), %rax
+	movq 224(%rsp), %rax
 	andb $0xE0, %al
 
-	movq %rax, %rdi
+	leaq 200(%rsp), %rdi
 	movq 24(%rax), %rsi
 	leaq 176(%rsp), %rdx
 	call *16(%rax)
 
 	/*check returnType*/
-	movq 208(%rsp), %rax
-	andb $0xE0, %al
-	cmpb $0, 7(%rax)
+	cmpb $0, 200(%rsp)
 	je .done
-	cmpb $1, 7(%rax)
+	cmpb $1, 200(%rsp)
 	je .retInt
 
 /*.retFloat:*/
-	movsd 8(%rax), %xmm0
+	movsd 208(%rsp), %xmm0
 	jmp .done
 
 .retInt:
-	movq 8(%rax), %rax
+	movq 208(%rsp), %rax
 
 .done:
 	leave
@@ -60,20 +58,20 @@ ffcb_call:
 .global ffcb_return_int
 .type ffcb_return_int, %function
 ffcb_return_int:
-	movb $1, 7(%rdi)
+	movb $1, (%rdi)
 	movq %rsi, 8(%rdi)
 	ret
 
 .global ffcb_return_pointer
 .type ffcb_return_pointer, %function
 ffcb_return_pointer:
-	movb $1, 7(%rdi)
+	movb $1, (%rdi)
 	movq %rsi, 8(%rdi)
 	ret
 
 .global ffcb_return_float
 .type ffcb_return_float, %function
 ffcb_return_float:
-	movb $2, 7(%rdi)
+	movb $2, (%rdi)
 	movsd %xmm0, 8(%rdi)
 	ret

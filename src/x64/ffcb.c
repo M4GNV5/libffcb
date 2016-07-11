@@ -5,9 +5,7 @@
 
 typedef struct ffcb
 {
-	uint8_t code[23 - 2 * sizeof(void *)];
-	char retType; //0 = void/keep, 1 = int/pointer, 2 = float
-	int64_t retValue;
+	uint8_t code[32 - 2 * sizeof(void *)];
 	void *func;
 	void *data;
 } ffcb_t;
