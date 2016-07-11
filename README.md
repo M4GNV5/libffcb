@@ -38,11 +38,11 @@ Planned:
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include "ffcb.h"
+#include "src/ffcb.h"
 
-typedef void (*callback_t)(int argc, ...);
+typedef double (*callback_t)(int argc, ...);
 
-void myFunc(int *data, va_list ap)
+void myFunc(ffcb_return_t *ret, int *data, va_list ap)
 {
 	//print data
 	printf("*data = %d\n", *data);
@@ -59,6 +59,8 @@ void myFunc(int *data, va_list ap)
 	{
 		printf("args[%d] = %d\n", i, va_arg(ap, int));
 	}
+
+	ffcb_return_float(ret, 3.1415);
 }
 
 int main()
@@ -68,7 +70,8 @@ int main()
 	*b = -666;
 
 	callback_t func = ffcb_create(myFunc, &a);
-	func(4, 31, 12, 13, 17);
+	printf("func returned %f\n", func(4, 31, 12, 13, 17));
+	ffcb_delete(func);
 
 	void *func2 = ffcb_create(myFunc, b);
 	atexit(func2);
