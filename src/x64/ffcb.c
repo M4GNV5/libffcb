@@ -42,7 +42,6 @@ void *ffcb_create(void *func, void *arg)
 	*(int32_t *)(cb->code + 1) = (uint8_t *)&ffcb_call - cb->code - 5;
 	cb->code[5] = 0xc3; //ret
 
-	cb->retType = 0;
 	cb->func = func;
 	cb->data = arg;
 
