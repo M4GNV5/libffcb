@@ -1,3 +1,18 @@
+KNOWN_ARCHS.x86_64=x64
+KNOWN_ARCHS.i386=x86
+KNOWN_ARCHS.i686=x86
+
+ifeq ($(TARGET),)
+ARCH=$(shell uname -m)
+
+ifeq (${KNOWN_ARCHS.${ARCH}},)
+$(error unsupported/unknown architecture $(ARCH))
+else
+TARGET=${KNOWN_ARCHS.${ARCH}}
+endif
+
+endif
+
 CC.x64 = gcc
 CC.x86 = gcc
 
@@ -11,10 +26,10 @@ OBJECTS.x64 = bin/callback.o bin/ffcb.o
 OBJECTS.x86 = bin/callback.o bin/ffcb.o
 
 BIN = bin
-CC = ${CC.${target}}
-CFLAGS = ${CFLAGS.${target}}
-ASFLAGS = ${ASFLAGS.${target}}
-OBJECTS = ${OBJECTS.${target}}
+CC = ${CC.${TARGET}}
+CFLAGS = ${CFLAGS.${TARGET}}
+ASFLAGS = ${ASFLAGS.${TARGET}}
+OBJECTS = ${OBJECTS.${TARGET}}
 
 all: $(BIN) $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) -shared -o $(BIN)/libffcb.a
@@ -28,8 +43,8 @@ $(BIN):
 $(BIN)/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN)/%.o: src/$(target)/%.c
+$(BIN)/%.o: src/$(TARGET)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(BIN)/%.o: src/$(target)/%.s
+$(BIN)/%.o: src/$(TARGET)/%.s
 	as $(ASFLAGS) $< -o $@
