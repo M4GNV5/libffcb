@@ -17,7 +17,7 @@ ASFLAGS = ${ASFLAGS.${target}}
 OBJECTS = ${OBJECTS.${target}}
 
 all: $(BIN) $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -shared -o $(BIN)/libffcb.so
+	$(CC) $(CFLAGS) $(OBJECTS) -shared -o $(BIN)/libffcb.a
 
 clean:
 	if [ -d $(BIN) ]; then rm -r $(BIN); fi
