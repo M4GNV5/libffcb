@@ -29,6 +29,9 @@ ffcb_call:
 	movq %rax, 184(%rsp)	/*void *overflow_area;*/
 	movq %rsp, 192(%rsp)	/*void *reg_area;*/
 
+	/*set returnType to void*/
+	movb $0, 200(%rsp)
+
 	/*retrieve ffcb_t pointer*/
 	movq 224(%rsp), %rax
 	andb $0xE0, %al

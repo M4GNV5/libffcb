@@ -14,6 +14,7 @@ ffcb_call:
 	pushl 28(%eax)
 
 	/*push ffcb_return_t pointer*/
+	movb $0, (%edx)
 	push %edx
 
 	call *24(%eax)
