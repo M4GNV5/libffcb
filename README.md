@@ -33,7 +33,35 @@ Planned:
 - MIPS
 - ...
 
-##Example code
+##Short example
+```C
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include "src/ffcb.h"
+
+void myFunc(ffcb_return_t ret, int *data, va_list ap)
+{
+	printf("data = %d\n", *data);
+	free(data);
+}
+
+int main()
+{
+	//allocate memory used for holding data passed to myFunc
+	int *data = malloc(sizeof(int));
+	*data = 42;
+
+	//create a combined function pointer
+	void *func = ffcb_create(myFunc, data);
+
+	//pass it to atexit
+	//this is the important part: note that we do not pass 'data' to atexit in any way
+	atexit(func);
+}
+```
+
+##Long example
 ```C
 #include <stdio.h>
 #include <stdlib.h>
