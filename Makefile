@@ -22,14 +22,12 @@ CFLAGS.x86 = -m32 -Wall -g -fPIC
 ASFLAGS.x64 = --64
 ASFLAGS.x86 = --32
 
-OBJECTS.x64 = bin/callback.o bin/ffcb.o
-OBJECTS.x86 = bin/callback.o bin/ffcb.o
-
 BIN = bin
 CC = ${CC.${TARGET}}
 CFLAGS = ${CFLAGS.${TARGET}}
 ASFLAGS = ${ASFLAGS.${TARGET}}
-OBJECTS = ${OBJECTS.${TARGET}}
+
+OBJECTS = bin/callback.o bin/ffcb.o bin/code.o
 
 all: $(BIN) $(OBJECTS)
 	ar rcs $(BIN)/libffcb.a $(OBJECTS)
