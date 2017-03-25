@@ -1,10 +1,10 @@
-#libffcb
+# libffcb
 Library for combining function pointer + data pointer to a single function pointer.
 The returned function pointer can be called like any other C function. The called function receives three arguments:
 A pointer used for returning values, the data pointer passed to `ffcb_create` and a `va_list`.
 You can access all arguments passed to the function using stdarg's `va_arg`.
 
-##Functions
+## Functions
 ffcb library functions
 ```C
 void *ffcb_create(void *func, void *arg);
@@ -23,7 +23,7 @@ Your callback function should have a prototype similar to this:
 void myFunction(ffcb_return_t ret, void *arg, va_list ap);
 ```
 
-##Architectures
+## Architectures
 Supported:
 - x86
 - x64
@@ -33,7 +33,7 @@ Planned:
 - MIPS
 - ...
 
-##Short example
+## Short example
 ```C
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,7 +61,7 @@ int main()
 }
 ```
 
-##Long example
+## Long example
 ```C
 #include <stdio.h>
 #include <stdlib.h>
